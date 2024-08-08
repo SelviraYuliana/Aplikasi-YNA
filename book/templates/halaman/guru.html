@@ -1,0 +1,61 @@
+{% extends 'frame/main.html' %} {% load widget_tweaks %} {% block content %}
+<div class="col-12 mt-3">
+  <div class="card card-olive card-outline">
+    <div class="card-header">
+      <h2 class="card-title mt-2">Data Guru</h2>
+      <div class="card-tools">
+        <ul class="nav nav-pills ml-auto">
+          <li class="nav-item mr-1">
+            <a href="{% url 'add_dataguru' %}" class="btn btn-block btn-primary"
+              ><i class="fas fa-plus"></i> Tambah Guru</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+      <table id="example1" class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th class="align-middle text-center">No.</th>
+            <th>Nama</th>
+            <th>Tempat, Tanggal Lahir</th>
+            <th>Jenis Kelamin</th>
+            <th>Jabatan</th>
+            <th>Pendidikan</th>
+            <th>Alamat</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for dj in d_guru %}
+          <tr>
+            <td class="align-middle text-center">{{forloop.counter}}</td>
+            <td class="align-middle">{{ dj.nama }}</td>
+            <td class="align-middle">{{ dj.tempat_kelahiran }}, {{ dj.tgl_lahir|date:'d-m-Y' }}</td>
+            <td class="align-middle">{{ dj.gender_guru }}</td>
+            <td class="align-middle">{{ dj.jabatan }}</td>
+            <td class="align-middle">{{ dj.pendidikan }}</td>
+            <td class="align-middle">{{ dj.alamat }}</td>
+            <td class="align-middle text-center">
+              <a href="{% url 'update_dataguru' dj.id %}" class="btn btn-warning btn-sm mb-1">Edit</a>
+              <form action="{% url 'delete_dataguru' dj.id %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')">Hapus</button>
+              </form>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="text-center">Data Guru Kosong</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <!-- /.card-body -->
+  </div>
+</div>
+{% endblock content %}
